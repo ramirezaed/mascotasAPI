@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id           Int           @id @default(autoincrement())
+  nombre       String
+  correo       String        @unique
+  telefono     String?
+  mascotas     Mascota[]
+  campañas    Campaña[]
+  alojamientos Alojamiento[]
+  creadoEn     DateTime      @default(now())
+}
+
+// Publicaciones de mascotas perdidas o encontradas
+model Mascota {
+  id          Int           @id @default(autoincrement())
+  nombre      String?
+  raza        String?
+  tamaño     String?
+  tipo        String
+  descripcion String?
+  estado      EstadoMascota
+  usuario     Usuario?      @relation(fields: [usuarioId], references: [id])
+  usuarioId   Int? // ahora opcional
+  creadoEn    DateTime      @default(now())
+
+  // campos de contacto si no hay usuario
+  contactoNombre   String?
+  contactoCorreo   String?
+  contactoTelefono String?
+  imagen           String?
+}
+
+enum EstadoMascota {
+  PERDIDA
+  ENCONTRADA
+}
+
+// Campañas de vacunación, castración, adopción, etc.
+model Campaña {
+  id          Int       @id @default(autoincrement())
+  titulo      String
+  descripcion String?
+  fecha       DateTime?
+  ubicacion   String?
+  usuario     Usuario?  @relation(fields: [usuarioId], references: [id])
+  usuarioId   Int?
+  creadoEn    DateTime  @default(now())
+
+  // contacto si no hay usuario
+  contactoNombre   String?
+  contactoCorreo   String?
+  contactoTelefono String?
+}
+
+// Alojamiento transitorio para mascotas
+model Alojamiento {
+  id          Int     @id @default(autoincrement())
+  descripcion String?
+  ubicacion   String?
+  capacidad   Int? // cuántas mascotas puede alojar
+
+  usuario   Usuario? @relation(fields: [usuarioId], references: [id])
+  usuarioId Int? // lo hacemos opcional
+
+  creadoEn DateTime @default(now())
+
+  // contacto si no hay usuario
+  contactoNombre   String?
+  contactoCorreo   String?
+  contactoTelefono String?
+}
