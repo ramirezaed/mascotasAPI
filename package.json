@@ -1,7 +1,9 @@
+
+
 {
   "name": "bootcamp",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
     "server": "nodemon --exec ts-node server.ts",
     "build": "tsc",
@@ -28,3 +30,4 @@
     "typescript": "^5.9.2"
   }
 }
+
