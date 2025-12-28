@@ -8,9 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mascotaController = void 0;
 const service_1 = require("./service");
+const multer_1 = __importDefault(require("multer"));
+const upload = (0, multer_1.default)({ storage: multer_1.default.memoryStorage() });
 const { newMascota, fetchByName, fetchEncontrados, fetchPerdida, fetchById, deleteMascota, fetchMascotas, } = service_1.mascotasServices;
 class MascotaController {
     newMascota(req, res) {
@@ -18,8 +23,6 @@ class MascotaController {
             // upload.single("imagen");
             try {
                 const datos = req.body;
-                if (req.file)
-                    datos.imagen = req.file.filename;
                 const result = yield newMascota(datos);
                 return res.status(201).json(result);
             }
@@ -28,6 +31,59 @@ class MascotaController {
             }
         });
     }
+    // controller.ts
+    // newMascota = [
+    //   upload.single("imagen"), // Multer recibe el archivo
+    //   async (req: Request, res: Response) => {
+    //     try {
+    //       // 🔹 Log para verificar Multer
+    //       console.log("Archivo recibido:", req.file);
+    //       const {
+    //         nombre,
+    //         raza,
+    //         tipo,
+    //         descripcion,
+    //         estado,
+    //         contactoNombre,
+    //         contactoCorreo,
+    //         contactoTelefono,
+    //       } = req.body;
+    //       let imagenPath: string | undefined;
+    //       // 🔹 Subida al bucket si hay archivo
+    //       if (req.file) {
+    //         const fileExt = req.file.originalname.split(".").pop();
+    //         const fileName = `imagen-${Date.now()}.${fileExt}`;
+    //         const { data, error } = await supabase.storage
+    //           .from("mascotas") // nombre de tu bucket
+    //           .upload(fileName, req.file.buffer, {
+    //             cacheControl: "3600",
+    //             upsert: false,
+    //             contentType: req.file.mimetype,
+    //           });
+    //         // 🔹 Log del resultado de la subida
+    //         console.log("Resultado upload:", data, error);
+    //         if (error) throw error;
+    //         imagenPath = data.path; // Guardamos la ruta para la DB
+    //       }
+    //       // 🔹 Guardar en DB
+    //       const nueva = await newMascota({
+    //         nombre,
+    //         raza,
+    //         tipo,
+    //         descripcion,
+    //         estado,
+    //         contactoNombre,
+    //         contactoCorreo,
+    //         contactoTelefono,
+    //         imagen: imagenPath, // ruta que subimos al bucket
+    //       });
+    //       return res.status(201).json(nueva);
+    //     } catch (error: any) {
+    //       console.error("Error creando mascota:", error);
+    //       return res.status(400).json({ error: error.message });
+    //     }
+    //   },
+    // ];
     fetchByName(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

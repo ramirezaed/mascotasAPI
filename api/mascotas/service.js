@@ -25,29 +25,10 @@ function validarEmail(email) {
     return regex.test(emailLimpio);
 }
 class MascotasServices {
-    // async newMascota(data: Imascotas) {
-    //   try {
-    //     const result = await newMascota(data);
-    //     // if (!data.contactoTelefono || validarTelefono(data.contactoTelefono)) {
-    //     //   throw new Error("formato de numero incorreccto");
-    //     // }
-    //     // if (!data.contactoCorreo || validarEmail(data.contactoCorreo)) {
-    //     //   throw new Error("formato de correo incorrecto");
-    //     // }
-    //     return result;
-    //   } catch (error) {
-    //     throw new Error((error as Error).message);
-    //   }
-    // }
     newMascota(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                if (data.imagen && typeof data.imagen !== "string") {
-                    // Solo guardamos la ruta relativa en la DB
-                    data.imagen = `/uploads/${data.imagen}`;
-                }
-                const result = yield newMascota(data);
-                return result;
+                return yield newMascota(data);
             }
             catch (error) {
                 throw new Error(error.message);
