@@ -6,7 +6,6 @@ export enum EstadoMascota {
 export interface Imascotas {
   nombre?: string;
   raza?: string;
-  tamaño?: string;
   tipo: string;
   descripcion?: string;
   estado: EstadoMascota;
