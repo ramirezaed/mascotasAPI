@@ -169,7 +169,9 @@
   },
   "include": [
     "server.ts",
-    "src/**/*"
+    "src/**/*",
+    "middleware/**/*"
+
   ],
   "exclude": [
     "node_modules"

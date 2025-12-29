@@ -1,5 +1,6 @@
 import { mascotaController } from "./controller";
 import express from "express";
+import { upload } from "../../middleware/upload";
 
 const mascotaRoutes = express.Router();
 const {
@@ -12,7 +13,7 @@ const {
   fetchMascotas,
 } = mascotaController;
 
-mascotaRoutes.post("/new", newMascota);
+mascotaRoutes.post("/new", upload.single("imagen"), newMascota);
 mascotaRoutes.get("/fetchByName", fetchByName);
 mascotaRoutes.get("/encontradas", fetchEncontrados);
 mascotaRoutes.get("/fetchMascotas", fetchMascotas);
